@@ -8,6 +8,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -37,6 +38,12 @@ public class HeroService {
 		return heroRepository.get(NumberUtils.toLong(id, 0));
 	}
 	
+	@Path("/hero/search/{term}")
+	@GET
+	public List<Hero> searchHero(@PathParam("term") String term) {
+		return heroRepository.getMatching(term);
+	}
+	
 	@Path("/heroes/")
 	@GET
 	public List<Hero> getAllHeroes() {
@@ -45,7 +52,13 @@ public class HeroService {
 	
 	@Path("/hero/")
 	@POST
-	public void addHero(Hero hero) {
+	public Hero addHero(Hero hero) {
+		return heroRepository.addNew(hero.getName());
+	}
+	
+	@Path("/hero/")
+	@PUT
+	public void updateHero(Hero hero) {
 		heroRepository.put(hero);
 	}
 	
